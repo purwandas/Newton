@@ -178,7 +178,7 @@
 	                      	1
 	                      </td>
 	                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">
-	                      {{ @$installasi }}
+	                      {!! number_format($installasi) !!}
 	                  	  </td>
 	                    </tr>
 	                    <tr>
@@ -188,13 +188,13 @@
                     @if ( $service > 0 )
 	                    <tr>
 	                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #ff0000;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
-                            Service
+                            Service ({!! number_format($service) !!})
 	                      </td>
 	                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">
-	                      	1
+	                      	{{ @$invoice->month_gap }}
 	                      </td>
 	                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">
-	                      {{ @$service }}
+	                      {!! number_format(@$total_service) !!}
 	                  	  </td>
 	                    </tr>
 	                    <tr>

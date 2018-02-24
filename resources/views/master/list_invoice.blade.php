@@ -34,9 +34,11 @@
                                         <th>Invoice No</th>
                                         <th>Issued Date</th>
                                         <th>Invoice Period</th>
-                                        <th>Due Date</th>
+                                        <!-- <th>Due Date</th> -->
                                         <th>Perusahaan</th>
                                         <th>File</th>
+                                        <th>Status</th>
+                                        <th>Verification Image</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -46,6 +48,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="verification-image">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Verivication Image</h4>
+              </div>
+              <div class="modal-body">
+                <div id="verification-image" class="text-center">
+                    <img id="image" height="250px" onError="this.onerror=null;this.src='{{ asset('image/missing.png') }}';" style="border:1px solid grey"> 
+                    <hr>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="text-center">
+                    <a href="" id="confirm" class="btn btn-success text-left">Confirm</a>
+                    <a href="" id="reject" class="btn btn-danger text-left">Reject</a>
+                </div>
+                <button type="button" class="btn btn-default text-right" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 
         <script>
             $(document).ready(function () {     
@@ -69,11 +99,12 @@
                         {data: 'id', name: 'id'},                
                         {data: 'invoice_number', name: 'invoice_number'},
                         {data: 'issue_date', name: 'issue_date'},
-                        // {data: 'id_order', name: 'id_order'},
                         {data: 'period', name: 'period'},
-                        {data: 'due_date', name: 'due_date'},
+                        // {data: 'due_date', name: 'due_date'},
                         {data: 'order', name: 'order'},
                         {data: 'file', name: 'file'},
+                        {data: 'paid_status', name: 'paid_status'},
+                        {data: 'verification', name: 'verification'},
                         
                     ],
                     "columnDefs": [
@@ -132,6 +163,22 @@
                 });
 
             });
+
+        // Init add form
+        $(document).on("click", ".image-confirmation", function () {       
+            
+            var id = $(this).data('id');
+            var image = $(this).data('verification');
+
+            $('#confirm').removeAttr("href");
+            $('#confirm').attr("href", "{{ url('confirm-invoice') }}/"+id);
+            $('#reject').removeAttr("href");
+            $('#reject').attr("href", "{{ url('reject-invoice') }}/"+id);
+            
+            $('#image').removeAttr("src");
+            $('#image').attr("src", image);
+
+        });
 
         </script>
 

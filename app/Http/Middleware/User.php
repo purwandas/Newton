@@ -21,6 +21,6 @@ class User
             return $next($request);
         }
 
-        return redirect('/sorry');
+        return redirect('/');
     }
 }

@@ -119,9 +119,9 @@
                                 <h5>Colocation Server - <span class="semi-bold"> {{ @$paket->nama_paket }} </span></h5>
                                 <br />
                                 <div class="row">
+                                    <div class="form-group"  style="padding-left: 10%;">
                                     <div class="form-group">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 col-md-3 control-label">
+                                        <label class="col-sm-5 col-md-5 control-label text-left">
                                             Packet Fees
                                         </label>
                                         <div class="col-sm-7 col-md-7">
@@ -132,7 +132,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 col-md-3 control-label">
+                                        <label class="col-sm-5 col-md-5 control-label text-left">
                                             Setup Fees
                                         </label>
                                         <div class="col-sm-7 col-md-7">
@@ -141,7 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 col-md-3 control-label">
+                                        <label class="col-sm-5 col-md-5 control-label text-left">
                                             Service Monthly
                                         </label>
                                         <div class="col-sm-7 col-md-7">
@@ -150,7 +150,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 col-md-3 control-label">
+                                        <label class="col-sm-5 col-md-5 control-label text-left">
                                             PPn 10 %
                                         </label>
                                         <div class="col-sm-7 col-md-7">
@@ -159,7 +159,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 col-md-3 control-label">
+                                        <label class="col-sm-5 col-md-5 control-label text-left">
                                              Total Due Today
                                         </label>
                                         <div class="col-sm-7 col-md-7">

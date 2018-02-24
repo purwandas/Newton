@@ -78,6 +78,12 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/user-invoice', 'InvoiceController@userIndex');
 		Route::get('/user-profile', 'UserController@userIndex');
 		Route::patch('/user-profile-update/{param}', 'UserController@update');
+		Route::post('/invoice-verification-add', 'InvoiceController@addVerification');
+		Route::patch('/invoice-verification-change', 'InvoiceController@addVerification');
+		Route::get('/invoice-verification-edit/{id}', 'InvoiceController@editVerification');		
+
+		// Datatables
+			Route::post('datatable/userinvoice', ['as'=> 'datatable.userinvoice','uses'=>'InvoiceController@userDataTable']);
 		
 	});
 
@@ -140,6 +146,8 @@ Route::group(['middleware' => ['auth']], function () {
 	    Route::get('user/reject/{id}', 'UserController@reject');
 
 		Route::get('invoice', 'InvoiceController@index');
+		Route::get('/confirm-invoice/{id}', 'InvoiceController@confirm');
+		Route::get('/reject-invoice/{id}', 'InvoiceController@reject');
 
 
 		// Datatables

@@ -64,11 +64,13 @@ class ListOrderController extends Controller
         }
 
         $service = 0;
+        $total_service = 0;
         if ($order->service == 'Y') {
             $service = $paket->service;
+            $total_service = $service * $invoice->month_gap;
         }
 
-        $subtotal += $installasi + $service;
+        $subtotal += $installasi + $total_service;
 
         $ppn = $subtotal / 10;
 
@@ -93,6 +95,7 @@ class ListOrderController extends Controller
                 "date2"=>$date2,
                 "installasi"=>$installasi,
                 "service"=>$service,
+                "total_service"=>$total_service,
                 "subtotal"=>number_format($subtotal),
                 "ppn"=>number_format($ppn),
                 "total"=>number_format($total),
@@ -229,7 +232,6 @@ class ListOrderController extends Controller
     
     public function add(Request $request)
     {
-        // return $request->all();
         
         if (Auth::user()->role == 'admin') {
             $this->validate($request, [
@@ -241,11 +243,11 @@ class ListOrderController extends Controller
                 'installasi' => 'required',
                 'service' => 'required',
             ]);
-            // return $request->all();
+
             $request['pembayaran'] = "Unpaid";
             $order = ListOrder::create($request->all());
 
-            // Begin Generate PDF Invoice
+            // Begin Generate PDF Invoice Yearly
                 $startDate = $request['rencana_pemasangan'];
                 $startMonth = substr($startDate, 5, 2);
                 $selisih = 13 - $startMonth;
@@ -296,8 +298,6 @@ class ListOrderController extends Controller
                     }
 
                 /* Make Invoice */
-                    // kalo udah looping, loop ke 1, installasi sesuai piihan, loop ke >1, installasi = 'N'
-                    $installasi = $order->installasi;
                     $dateNow = Carbon::now()->addDay();
                     $date = Carbon::now()->addDay()->format('Y-m-d');
                     // $arrayDate = explode('-', $dateNow);
@@ -327,7 +327,7 @@ class ListOrderController extends Controller
                                         "invoice_number" => $generateNumber,
                                         "issue_date" => $date,
                                         "month_gap" => $gap,
-                                        "installasi" => $installasi,
+                                        "installasi" => $installasi_status,
                                         "invoice_start_period" => $startPeriodDate,
                                         "invoice_end_period" => $endPeriodDate,
                                         "due_date" => $endPeriodDate,
@@ -656,11 +656,13 @@ class ListOrderController extends Controller
     // User Order Step 3
     public function userOrder3(Request $request)
     {
-        $total = $request->total;
+        $bulanan = $request->harga;
 
-        if ($request->installasi > 0) {
-            $total -= $request->installasi;
+        if ($request->service > 0) {
+            $bulanan += $request->service;
         }
+
+        $new_ppn = $bulanan * 10/100;
 
         return view('user.order-review', 
         [
@@ -672,7 +674,7 @@ class ListOrderController extends Controller
             'subtotal' => $request->total - $request->ppn,
             'ppn' => $request->ppn,
             'total' => $request->total,
-            'bulanan' => $total,
+            'bulanan' => $bulanan + $new_ppn,
             'start_date' => $request->start_date,
             'survey_date' => $request->survey_date,
             'jangka_waktu' => $request->jangka_waktu,

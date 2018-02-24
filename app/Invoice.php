@@ -11,7 +11,7 @@ class Invoice extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'id_order', 'invoice_number', 'issue_date', 'invoice_start_period', 'invoice_end_period', 'due_date', 'file', 'month_gap', 'installasi'
+        'id_order', 'invoice_number', 'issue_date', 'invoice_start_period', 'invoice_end_period', 'due_date', 'file', 'month_gap', 'installasi', 'paid_status', 'paid_file', 'verification_file'
     ];
 
     /**
