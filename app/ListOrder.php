@@ -11,7 +11,7 @@ class ListOrder extends Model
     use SoftDeletes;
             
     protected $fillable = [
-        'tipe_pelanggan', 'nama_perusahaan', 'alamat_perusahaan', 'penanggung_jawab', 'jabatan_penanggung_jawab', 'nip_penanggung_jawab', 'hp_penanggung_jawab', 'telp', 'email', 'jenis_server', 'ukuran_server', 'id_paket', 'status', 'jangka_waktu', 'rencana_pemasangan', 'installasi', 'service', 'rencana_survei', 'pembayaran', 'new_file', 'status_survei', 'kode_pos', 'provinsi', 'id_user', 'id_operating_system'
+        'tipe_pelanggan', 'nama_perusahaan', 'alamat_perusahaan', 'penanggung_jawab', 'jabatan_penanggung_jawab', 'nip_penanggung_jawab', 'hp_penanggung_jawab', 'telp', 'email', 'jenis_server', 'ukuran_server', 'id_paket', 'status', 'jangka_waktu', 'rencana_pemasangan', 'installasi', 'service', 'rencana_survei', 'pembayaran', 'status_survei', 'kode_pos', 'provinsi', 'id_user', 'id_operating_system', 'status_survei_user', 'survei_file'
     ];
 
     /**

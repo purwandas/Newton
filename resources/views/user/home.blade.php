@@ -28,11 +28,11 @@
                   </div>  
                   <div class="heading">
                             <i class="fa fa-cube" aria-hidden="true"></i>&nbsp;
-                      <span id="" class="animate-number" data-value="0" data-animation-duration="1200">0</span>
+                      <span id="" class="animate-number" data-value="{{ @$service }}" data-animation-duration="1200">0</span>
                                   
                   </div>      
                   </div>  
-                    <div style="display:block; padding: 12px 18px 12px 24px; background-color: rgba(0, 0, 0, 0.28);"><a href="List_service_user.html" class="text-white mini-description "><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Click here to view detail</a></div>
+                    <div style="display:block; padding: 12px 18px 12px 24px; background-color: rgba(0, 0, 0, 0.28);"><a href="{{ url('/user-service') }}" class="text-white mini-description "><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Click here to view detail</a></div>
                     </div>
               </div>
               <div class="col-md-4 col-sm-6 spacing-bottom">
@@ -47,11 +47,11 @@
                   </div>  
                   <div class="heading">
                             <i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;
-                      <span id="" class="animate-number" data-value="0" data-animation-duration="1200">0</span>
+                      <span id="" class="animate-number" data-value="{{ @$invoice }}" data-animation-duration="1200">0</span>
                                   
                   </div>      
                   </div>  
-                    <div style="display:block; padding: 12px 18px 12px 24px; background-color: rgba(0, 0, 0, 0.28);"><a  href="List_invoice_user.html" class="text-white mini-description "><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Click here to view detail</a></div>
+                    <div style="display:block; padding: 12px 18px 12px 24px; background-color: rgba(0, 0, 0, 0.28);"><a  href="{{ url('/user-invoice') }}" class="text-white mini-description "><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Click here to view detail</a></div>
              
                 </div>
                 

@@ -70,6 +70,9 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('/user-home', 'HomeController@userIndex');
 		
 		Route::get('/user-service', 'ListOrderController@userServiceIndex');
+		Route::get('/user-confirm-survey/{id}', 'ListOrderController@confirmSurveyUser');
+		Route::post('/user-new-survey/{id}', 'ListOrderController@newSurveyUser');
+		Route::post('/user-new-payment/{id}', 'ListOrderController@newPaymentUser');
 		
 		
 		Route::get('/user-order', 'ListOrderController@userOrderIndex');
@@ -99,6 +102,8 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('listorder/edit/{id}', 'ListOrderController@edit');
 	    Route::patch('listorder/{id}', 'ListOrderController@update');
 	    Route::get('listorder/delete/{id}', 'ListOrderController@destroy');
+	    Route::get('/confirm-survey/{id}', 'ListOrderController@confirmSurvey');
+		Route::post('/new-survey/{id}', 'ListOrderController@newSurvey');
 
 		Route::get('paket', 'PacketController@index');
 		Route::get('paket-create', 'PacketController@create');

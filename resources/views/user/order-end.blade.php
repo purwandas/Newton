@@ -52,7 +52,7 @@
                                         <label class="col-md-7 col-md-7 control-label">
                                             <!-- Nanti di looping, kirim invoicenya aja -->
                                             @foreach($invoice as $value)
-                                            <a  style="color: blue" href="{{ @$value->file }}">Invoice {{ @$value->number }}</a><br />
+                                            <a  style="color: blue" href="{{ @$value->file }}">Invoice {{ @$value->invoice_number }}</a><br />
                                             @endforeach
                                         </label>
                                     </div>

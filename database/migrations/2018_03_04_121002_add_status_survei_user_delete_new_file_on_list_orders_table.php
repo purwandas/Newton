@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrderStatusToListOrdersTable extends Migration
+class AddStatusSurveiUserDeleteNewFileOnListOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddOrderStatusToListOrdersTable extends Migration
     public function up()
     {
         Schema::table('list_orders', function (Blueprint $table) {
-            $table->string('order_status')->nullable()->after('due_date');
+            $table->string('status_survei_user')->nullable()->after('status_survei');
+            $table->dropColumn('new_file');
         });
     }
 
@@ -26,7 +27,8 @@ class AddOrderStatusToListOrdersTable extends Migration
     public function down()
     {
         Schema::table('list_orders', function (Blueprint $table) {
-            $table->dropColumn('order_status');
+            $table->dropColumn('status_survei_user');
+            $table->text('new_file')->nullable()->after('installasi');
         });
     }
 }

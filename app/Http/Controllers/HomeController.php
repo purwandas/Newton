@@ -40,15 +40,16 @@ class HomeController extends Controller
 
     public function userIndex()
     {
-        // $service = ListOrder::where('pembayaran','Paid')
-        //         ->where('id_user',Auth::user()->id)
-        //         ->get();
-        $service = 0;//count($service);
+        $service = ListOrder::where('pembayaran','Paid')
+                ->where('id_user',Auth::user()->id)
+                ->count();
 
-        // $invoice = ListOrder::where('pembayaran','Paid')
-        //         ->where('id_user',Auth::user()->id)
-        //         ->get();
-        $invoice = 0;//count($invoice);
+        // $service = 0;//count($service);
+
+        $invoice = ListOrder::where('pembayaran','Paid')
+                ->where('id_user',Auth::user()->id)
+                ->count();
+        // $invoice = 0;//count($invoice);
 
         return view('user.home', compact('service','invoice'));
     }

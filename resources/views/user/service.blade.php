@@ -45,21 +45,46 @@
             </div>
 
             <!-- BEGIN PORTLET CONFIGURATION MODAL FORM-->
-            <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="survey-date">
+            <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="request-survey">
               <div class="modal-dialog">
                 <div class="modal-content">
-                <form id="form" method="POST" action="{{ url('invoice-verification') }}">
-                {{ csrf_field() }}
+                <form id="request-form" method="POST" action="">
+                    {{ csrf_field() }}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Date of Survey</h4>
                   </div>
                   <div class="modal-body">
-                    <input type="text" required="required" placeholder="Survey Date" name="dates" id="dates" class="form-control" />
+                    <input type="text" required="required" placeholder="Survey Date" name="date" id="date" class="form-control" />
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <!-- BEGIN PORTLET CONFIGURATION MODAL FORM-->
+            <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="payment">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                <form id="payment-form" method="POST" action="">
+                    {{ csrf_field() }}
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">New Invoice</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="number" required="required" placeholder="Duration in month (ex: 5)" name="duration" id="duration" class="form-control" />
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="payment-submit" class="btn btn-primary">Submit</button>
                   </div>
                 </form>
                 </div>
@@ -94,40 +119,50 @@
                             {data: 'action', name: 'action'},
                         ],
                         "columnDefs": [
-                            {"className": "dt-center", "targets": [0]},
-                            {"className": "dt-center", "targets": [1]},
-                            {"className": "dt-center", "targets": [2]},
+                            {"className": "text-center", "targets": [2]},
+                            {"className": "text-center", "targets": [3]},
+                            {"className": "text-center", "targets": [4]},
                         ],
                         "order": [ [0, 'desc'] ],            
                     });
 
                 });
 
-                $(document).on("click", ".change-survei", function () {       
+                $(document).on("click", ".request-survey", function () {
                     
-                    var id = $(this).data('id');            
-                    $('#verification_file').val('');
-                    $('#invoice_id').val(id);
-                    var verificationImage = document.getElementById('verification-image');
-                    verificationImage.innerHTML = '';
+                    var id = $(this).data('id');
+                    $('#date').val('');
 
                     // Set action url form for add
-                    var postDataUrl = "{{ url('invoice-verification-add') }}";    
-                    $("#form").attr("action", postDataUrl);
+                    var postDataUrl = "{{ url('user-new-survey') }}/"+id;
+                    $("#request-form").attr("action", postDataUrl);
 
-                    // Delete Patch Method if Exist
-                    if($('input[name=_method]').length){
-                        $('input[name=_method]').remove();
-                    }
+                });
+
+                $(document).on("click", ".new-payment", function () {
+                    
+                    var id = $(this).data('id');
+                    $('#duration').val('');
+
+                    // Set action url form for add
+                    var postDataUrl = "{{ url('user-new-payment') }}/"+id;
+                    $("#payment-form").attr("action", postDataUrl);
+
+                });
+
+                $(document).on("click", "#payment-submit", function () {
+                    
+                    $("#payment").attr("style", 'display:none');
+                    alert('please wait!');
 
                 });
 
                 // DatePicker
                 $(document).ready(function () {
-                    var date_input = $('input[name="dates"]'); //our date input has the name "date"
+                    var date_input = $('input[name="date"]'); //our date input has the name "date"
                     var container = $(".bootstrap-iso form").length > 0 ? $(".bootstrap-iso form").parent() : "body";
                     var options = {
-                        format: "yyyy/mm/dd",
+                        format: "yyyy-mm-dd",
                         container: container,
                         todayHighlight: true,
                         autoclose: true
