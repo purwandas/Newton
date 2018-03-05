@@ -39,6 +39,7 @@
                                         <th>File</th>
                                         <th>Status</th>
                                         <th>Verification Image</th>
+                                        <th>Force Confirm</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -105,6 +106,7 @@
                         {data: 'file', name: 'file'},
                         {data: 'paid_status', name: 'paid_status'},
                         {data: 'verification', name: 'verification'},
+                        {data: 'force_confirm', name: 'force_confirm'},
                         
                     ],
                     "columnDefs": [

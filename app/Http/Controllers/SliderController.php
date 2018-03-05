@@ -77,7 +77,7 @@ class SliderController extends Controller
             'deskripsi' => 'required|string|max:255',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        return response()->json($request->all());
+        // return response()->json($request->all());
         // Upload file process
         ($request->image != null) ? 
             $image_url = $this->getUploadPathName($request->image, "slider/".$this->getRandomPath(), 'SLIDER') : $image_url = "";

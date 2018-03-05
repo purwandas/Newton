@@ -77,6 +77,18 @@ class InvoiceController extends Controller
                         "No Image Found";
                     }
                 })
+                ->addColumn('force_confirm', function ($item) {
+                    if ($item->paid_status != 'Paid') {
+                        $url = url('/force-confirm-invoice').'/'.$item->id;
+                        return
+                        "<a href='$url' class='config btn btn-sm btn-danger'>
+                            <i class='fa fa-money'></i>
+                            Force Paid
+                        </a>";
+                    } else {
+                        return "<p style='color:green;'>Paid</p>";
+                    }
+                })
                 ->editColumn('paid_status', function ($item) {
                     if ($item->paid_status == 'Paid') {
                         return "<p style='color:green;'>Paid</p>";
@@ -88,7 +100,7 @@ class InvoiceController extends Controller
                         return "<p style='color:red;'>Unpaid</p>";
                     }
                 })
-                ->rawColumns(['file', 'verification', 'paid_status'])
+                ->rawColumns(['file', 'verification', 'paid_status', 'force_confirm'])
                 ->make(true);
 
         }
@@ -253,7 +265,6 @@ class InvoiceController extends Controller
 
             return response()->json($data);
 
-            // return view('master.form.slider-form', compact('data'));
         }
 
 

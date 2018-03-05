@@ -306,7 +306,23 @@ class ListOrderController extends Controller
 
             $request['pembayaran'] = "Unpaid";
             $request['status_survei'] = "Confirmed";
+            $request['status_survei_user'] = "Confirmed";
             $order = ListOrder::create($request->all());
+
+            // Survey PDF
+                $survey_pdf = $this->generate_survey_pdf($order->id_user, $order->id);
+
+                $data['penanggung_jawab'] = $order->penanggung_jawab;
+                $data['email'] = $order->email;
+                $data['survey'] = $survey_pdf;
+                Mail::send('mails.survey', $data, function($message) use ($data){
+                    $message->to($data['email']);
+                    $message->subject('Survey Invitation');
+                    $message->attach($data['survey'], [
+                        'as' => "Survey.pdf",
+                        'mime' => 'application/pdf',
+                    ]);
+                });
 
             // Begin Generate PDF Invoice Yearly
                 $startDate = $request['rencana_pemasangan'];

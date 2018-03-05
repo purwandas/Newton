@@ -156,6 +156,7 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::get('invoice', 'InvoiceController@index');
 		Route::get('/confirm-invoice/{id}', 'InvoiceController@confirm');
 		Route::get('/reject-invoice/{id}', 'InvoiceController@reject');
+		Route::get('/force-confirm-invoice/{id}', 'InvoiceController@confirm');
 
 
 		// Datatables
