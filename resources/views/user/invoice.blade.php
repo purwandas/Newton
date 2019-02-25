@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <!-- BEGIN PORTLET CONFIGURATION MODAL FORM-->
     <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="upload">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -91,28 +91,6 @@
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
         </form>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="grid-config">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Date of Survey</h4>
-          </div>
-          <div class="modal-body">
-            <input type="text" required="required" placeholder="Survey Date" name="dates" id="dates" class="form-control" />
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Submit</button>
-          </div>
         </div>
         <!-- /.modal-content -->
       </div>
@@ -157,20 +135,7 @@
             });
 
         });
-        // DatePicker
-        $(document).ready(function () {
-            var date_input = $('input[name="dates"]'); //our date input has the name "date"
-            var container = $(".bootstrap-iso form").length > 0 ? $(".bootstrap-iso form").parent() : "body";
-            var options = {
-                format: "yyyy/mm/dd",
-                container: container,
-                todayHighlight: true,
-                autoclose: true
-            };
-            date_input.datepicker(options);
-        });
 
-        // Init add form
         $(document).on("click", ".add-verification", function () {       
             
             var id = $(this).data('id');            

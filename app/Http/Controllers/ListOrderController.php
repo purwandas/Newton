@@ -630,63 +630,125 @@ class ListOrderController extends Controller
 
         return redirect('/listorder');
     }
+    // User Order
+        // User Order Step 1, Display - Service Menu on User
+        public function userOrderIndex()
+        {
+            $paket = Packet::whereNull('deleted_at')->get();
 
-    // Display - Service Menu on User
-    public function userServiceIndex()
-    {
-        return view('user.service');
-    }
-
-    // User Order Step 1, Display - Service Menu on User
-    public function userOrderIndex()
-    {
-        $paket = Packet::whereNull('deleted_at')->get();
-
-        return view('user.order', compact('paket'));
-    }
-
-    // User Order Step 2, onClick Cart
-    public function userOrder2($id)
-    {
-        $paket = Packet::where('id',$id)->first();
-
-        return view('user.order-cart', compact('paket'));
-    }
-
-    // User Order Step 3
-    public function userOrder3(Request $request)
-    {
-        $bulanan = $request->harga;
-
-        if ($request->service > 0) {
-            $bulanan += $request->service;
+            return view('user.order', compact('paket'));
         }
 
-        $new_ppn = $bulanan * 10/100;
+        // User Order Step 2, onClick Cart
+        public function userOrder2($id)
+        {
+            $paket = Packet::where('id',$id)->first();
 
-        return view('user.order-review', 
-        [
-            'id_paket' => $request->id_paket,
-            'nama_paket' => $request->nama_paket,
-            'harga' => $request->harga,
-            'installasi' => $request->installasi,
-            'service' => $request->service,
-            'subtotal' => $request->total - $request->ppn,
-            'ppn' => $request->ppn,
-            'total' => $request->total,
-            'bulanan' => $bulanan + $new_ppn,
-            'start_date' => $request->start_date,
-            'survey_date' => $request->survey_date,
-            'jangka_waktu' => $request->jangka_waktu,
-            'operating_system' => $request->operating_system,
-        ]);
-    }
+            return view('user.order-cart', compact('paket'));
+        }
 
-    // User Order Step 4
-    public function userOrder4(Request $request)
-    {
-        // return $request->all();
+        // User Order Step 3
+        public function userOrder3(Request $request)
+        {
+            $bulanan = $request->harga;
 
-        return view('user.order-end');
-    }
+            if ($request->service > 0) {
+                $bulanan += $request->service;
+            }
+
+            $new_ppn = $bulanan * 10/100;
+
+            return view('user.order-review', 
+            [
+                'id_paket' => $request->id_paket,
+                'nama_paket' => $request->nama_paket,
+                'harga' => $request->harga,
+                'installasi' => $request->installasi,
+                'service' => $request->service,
+                'subtotal' => $request->total - $request->ppn,
+                'ppn' => $request->ppn,
+                'total' => $request->total,
+                'bulanan' => $bulanan + $new_ppn,
+                'start_date' => $request->start_date,
+                'survey_date' => $request->survey_date,
+                'jangka_waktu' => $request->jangka_waktu,
+                'operating_system' => $request->operating_system,
+            ]);
+        }
+
+        // User Order Step 4
+        public function userOrder4(Request $request)
+        {
+            // return $request->all();
+
+            return view('user.order-end');
+        }
+
+    // User Service
+        // Display - Service Menu on User
+        public function userServiceIndex()
+        {
+            return view('user.service');
+        }
+
+        public function userServiceDataTable(Request $request){
+            
+            $data = ListOrder::whereNull('list_orders.deleted_at')
+                        ->where('list_orders.id_user',Auth::user()->id)
+                        ->where('list_orders.pembayaran','Paid')
+                        ->join('packets', 'packets.id', 'list_orders.id_paket')
+                        ->select('list_orders.*', 'packets.nama_paket', 'packets.harga')
+                        ->get();
+
+            return $this->userServiceMakeTable($data);
+        }
+        
+        public function userServiceMakeTable($data){
+
+            return Datatables::of($data)
+                ->editColumn('file', function ($item) {
+                   return
+                   "<a href='$item->file' class='btn btn-sm btn-success'><i class='fa fa-file-pdf-o'></i> Download</a>";
+                })
+                ->editColumn('nama_paket', function ($item) {
+                   return $item->nama_paket.' ('.number_format($item->harga).' Monthly)';
+                })
+                ->addColumn('invalid_date', function ($item) {
+                    $dateNow = Carbon::now()->format('Y-m-d');
+
+                    $data = Invoice::whereNull('invoices.deleted_at')
+                        ->where('invoices.id_order', $item->id)
+                        ->where('invoices.paid_status', 'Paid')
+                        ->select('invoices.invoice_end_period')
+                        ->orderBy('invoices.id','desc')
+                        ->first();
+                    $status = "Unpaid";
+                    $date = $data->invoice_end_period;
+                        if ( $dateNow <= $data->invoice_end_period ) {
+                            $status = "Paid until ".$date;
+                        }
+                   return "$status";
+                })
+                ->addColumn('action', function ($item) {
+                        return
+                        "<a href='#payment' data-toggle='modal' data-id='$item->id' class='new-payment config btn btn-sm btn-success'>
+                            <i class='fa fa-money'></i>
+                            New Payment
+                        </a>";
+                })
+                ->addColumn('survey', function ($item) {
+                        return
+                        "<a href='#confirm-survey' data-toggle='modal' data-id='$item->id' class='confirm-survey config btn btn-sm btn-info'>
+                            <i class='fa fa-calendar-check-o'></i>
+                            Confirm Date
+                        </a>
+                        <a href='#request-survey' data-toggle='modal' data-id='$item->id' class='request-survey config btn btn-sm btn-warning'>
+                            <i class='fa fa-calendar'></i>
+                            Request New Date
+                        </a>";
+                })
+                ->rawColumns(['file', 'action', 'survey'])
+                ->make(true);
+
+        }
 }

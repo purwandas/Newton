@@ -2,14 +2,6 @@
 
 @section('content')
     <div class="page-content">
-        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-        <div id="portlet-config" class="modal hide">
-            <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button"></button>
-                <h3>Widget Settings</h3>
-            </div>
-            <div class="modal-body"> Widget settings form goes here </div>
-        </div>
         <div class="clearfix"></div>
         <div class="content">
 
@@ -26,13 +18,14 @@
                         <div class="grid-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table id="TableEmployee" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                    <table id="serviceTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                         <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Description</th>
-                                            <th>Date</th>
                                             <th>Invalid Date</th>
-                                            <th>Price</th>
+                                            <th>Survei</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -51,11 +44,95 @@
                 </div>
             </div>
 
+            <!-- BEGIN PORTLET CONFIGURATION MODAL FORM-->
+            <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="survey-date">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                <form id="form" method="POST" action="{{ url('invoice-verification') }}">
+                {{ csrf_field() }}
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Date of Survey</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="text" required="required" placeholder="Survey Date" name="dates" id="dates" class="form-control" />
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
             <script type="text/javascript">
                 $(document).ready(function() {
-                    $('#TableEmployee').DataTable({
-                        "pageLength": 10
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
                     });
+
+                    // Set data for Data Table 
+                    var table = $('#serviceTable').dataTable({
+                        "processing": true,
+                        "serverSide": true,           
+                        "ajax": {
+                            url: "{{ route('datatable.userservice') }}",
+                            type: 'POST',
+                        },
+                        "rowId": "id",
+                        "columns": [
+                            {data: 'id', name: 'id'},                
+                            {data: 'nama_paket', name: 'nama_paket'},
+                            {data: 'invalid_date', name: 'invalid_date'},
+                            {data: 'survey', name: 'survey'},
+                            {data: 'action', name: 'action'},
+                        ],
+                        "columnDefs": [
+                            {"className": "dt-center", "targets": [0]},
+                            {"className": "dt-center", "targets": [1]},
+                            {"className": "dt-center", "targets": [2]},
+                        ],
+                        "order": [ [0, 'desc'] ],            
+                    });
+
+                });
+
+                $(document).on("click", ".change-survei", function () {       
+                    
+                    var id = $(this).data('id');            
+                    $('#verification_file').val('');
+                    $('#invoice_id').val(id);
+                    var verificationImage = document.getElementById('verification-image');
+                    verificationImage.innerHTML = '';
+
+                    // Set action url form for add
+                    var postDataUrl = "{{ url('invoice-verification-add') }}";    
+                    $("#form").attr("action", postDataUrl);
+
+                    // Delete Patch Method if Exist
+                    if($('input[name=_method]').length){
+                        $('input[name=_method]').remove();
+                    }
+
+                });
+
+                // DatePicker
+                $(document).ready(function () {
+                    var date_input = $('input[name="dates"]'); //our date input has the name "date"
+                    var container = $(".bootstrap-iso form").length > 0 ? $(".bootstrap-iso form").parent() : "body";
+                    var options = {
+                        format: "yyyy/mm/dd",
+                        container: container,
+                        todayHighlight: true,
+                        autoclose: true
+                    };
+                    date_input.datepicker(options);
                 });
             </script>
 

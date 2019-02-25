@@ -68,7 +68,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::group(['middleware' => ['user']], function () {
 		Route::get('order', 'ListOrderController@create');
 		Route::get('/user-home', 'HomeController@userIndex');
+		
 		Route::get('/user-service', 'ListOrderController@userServiceIndex');
+		
 		
 		Route::get('/user-order', 'ListOrderController@userOrderIndex');
 		Route::get('/user-order-cart/{id}', 'ListOrderController@userOrder2');
@@ -84,6 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 		// Datatables
 			Route::post('datatable/userinvoice', ['as'=> 'datatable.userinvoice','uses'=>'InvoiceController@userDataTable']);
+			Route::post('datatable/userservice', ['as'=> 'datatable.userservice','uses'=>'ListOrderController@userServiceDataTable']);
 		
 	});
 

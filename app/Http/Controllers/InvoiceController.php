@@ -96,6 +96,12 @@ class InvoiceController extends Controller
         public function confirm($id)
         {
             $data = Invoice::where('invoices.id', $id);
+                
+                $invoice = Invoice::where('invoices.id', $id)->select('id_order')->first();
+                $order = ListOrder::find($invoice->id_order);
+                $order->update([
+                       'pembayaran' => 'Paid'
+                    ]);
             $data->update([
                        'paid_status' => 'Paid'
                     ]);
@@ -107,6 +113,11 @@ class InvoiceController extends Controller
         public function reject($id)
         {
             $data = Invoice::where('invoices.id', $id);
+                $invoice = Invoice::where('invoices.id', $id)->select('id_order')->first();
+                $order = ListOrder::find($invoice->id_order);
+                $order->update([
+                       'pembayaran' => 'Unpaid'
+                    ]);
             $data->update([
                        'paid_status' => 'Fail'
                     ]);
@@ -116,7 +127,7 @@ class InvoiceController extends Controller
         }
 
 
-    // User
+    // User Invoice
         public function userIndex()
         {
             return view('user.invoice');
@@ -244,5 +255,6 @@ class InvoiceController extends Controller
 
             // return view('master.form.slider-form', compact('data'));
         }
+
 
 }
